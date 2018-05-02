@@ -1,37 +1,50 @@
-## Welcome to GitHub Pages
+## Detecting IDA Pro debugging
+k
+IDA Pro packages pre-compiled binaries for remote debugging of different hosts as one can see below:
 
-You can use the [editor on GitHub](https://github.com/razaina/razaina.github.io/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
+![Pre-compiled binaries for remote debugging](./images/dbgsrv_ida_pro.png)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+So, basically if one wants to use IDA Pro for debugging a process running on a remote device, there are few steps that must be followed so IDA can properly instrument the debugging session. 
 
-### Markdown
+To make it short, here are the steps:
+- push the right debug stub (*e.g*: android_server) on the target device
+- execute the server (the debug stub) 
+- on the host machine, the port that IDA Pro uses to communicate with the remote debug stub (namely, by default 23946), has to be forwarded
+- From now on, one can debug a remote binary with IDA Pro
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+For more details, have a look at this [blogpost](https://finn.svbtle.com/remotely-debugging-android-binaries-in-ida-pro).
 
-```markdown
-Syntax highlighted code block
+Consequently, an easy way to detect if IDA Pro's remote debug stub has been run would be by monitoring the opening of the TCP port 23946).
 
-# Header 1
-## Header 2
-### Header 3
+```c
+#define IDAPRO_DEBUG_PORT "5D8A" //23946
+#define BUFF_LEN 1024*4
 
-- Bulleted
-- List
+char buff[BUFF_LEN];
 
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+FILE *fp;
+const char dir[] = "/proc/net/tcp";
+fp = fopen(dir, "r");
+if(fp == NULL){
+    return;
+}
+while(fgets(buff, BUFF_LEN, fp)){
+    if(strstr(buff, IDAPRO_DEBUG_PORT) != NULL){
+        /*
+        Do stuff here...
+        */
+        fclose(fp);
+        return;
+    }
+}
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+Missing:
+- TracerPID:
+  - https://github.com/strazzere/anti-emulator/blob/master/AntiEmulator/src/diff/strazzere/anti/debugger/FindDebugger.java#L36
+  - https://github.com/razaina/anti-debug/blob/master/detect-debug/src/main/jni/jni_export.c#L195
+  
+- Has ADB in Emulator:
+  - https://github.com/strazzere/anti-emulator/blob/master/AntiEmulator/src/diff/strazzere/anti/debugger/FindDebugger.java#L66
+  
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/razaina/razaina.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
