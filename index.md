@@ -1,5 +1,5 @@
 ## Detecting IDA Pro debugging
-k
+
 IDA Pro packages pre-compiled binaries for remote debugging of different hosts as one can see below:
 
 ![Pre-compiled binaries for remote debugging](./images/dbgsrv_ida_pro.png)
@@ -41,10 +41,10 @@ while(fgets(buff, BUFF_LEN, fp)){
 
 Missing:
 - TracerPID:
-  - https://github.com/strazzere/anti-emulator/blob/master/AntiEmulator/src/diff/strazzere/anti/debugger/FindDebugger.java#L36
-  - https://github.com/razaina/anti-debug/blob/master/detect-debug/src/main/jni/jni_export.c#L195
+  - [link#1](https://github.com/strazzere/anti-emulator/blob/master/AntiEmulator/src/diff/strazzere/anti/debugger/FindDebugger.java#L36)
+  - [link#2](https://github.com/razaina/anti-debug/blob/master/detect-debug/src/main/jni/jni_export.c#L195)
   
 - Has ADB in Emulator:
-  - https://github.com/strazzere/anti-emulator/blob/master/AntiEmulator/src/diff/strazzere/anti/debugger/FindDebugger.java#L66
+  - [link#1] https://github.com/strazzere/anti-emulator/blob/master/AntiEmulator/src/diff/strazzere/anti/debugger/FindDebugger.java#L66
   
 
