@@ -45,6 +45,6 @@ Missing:
   - [link#2](https://github.com/razaina/anti-debug/blob/master/detect-debug/src/main/jni/jni_export.c#L195)
   
 - Has ADB in Emulator:
-  - [link#1] https://github.com/strazzere/anti-emulator/blob/master/AntiEmulator/src/diff/strazzere/anti/debugger/FindDebugger.java#L66
+  - [link#1](https://github.com/strazzere/anti-emulator/blob/master/AntiEmulator/src/diff/strazzere/anti/debugger/FindDebugger.java#L66)
   
 
